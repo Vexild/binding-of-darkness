@@ -107,6 +107,7 @@ public partial class Player : CharacterBody2D
 			animationSprite.Animation = "walk_down";
 			animationSprite.FlipH = false;
 		}
+		// TODO: Add animations
 
 		if (Input.IsActionPressed("shoot_left"))
 		{

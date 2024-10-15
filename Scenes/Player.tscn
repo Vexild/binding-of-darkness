@@ -1,7 +1,7 @@
 [gd_scene load_steps=22 format=3 uid="uid://br8qon0w6ndrw"]
 
 [ext_resource type="Script" path="res://Scripts/Player.cs" id="1_u0nnw"]
-[ext_resource type="Texture2D" uid="uid://cvopdgeexye7j" path="res://Assets/32_Characters/Males/M_02.png" id="2_b5cs2"]
+[ext_resource type="Texture2D" uid="uid://cvopdgeexye7j" path="res://Assets/playerSprite.png" id="2_b5cs2"]
 [ext_resource type="PackedScene" uid="uid://cyca42dicah1s" path="res://Scenes/Projectile.tscn" id="2_ubpww"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hg0xh"]
