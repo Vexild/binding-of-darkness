@@ -175,5 +175,9 @@ shape = SubResource("RectangleShape2D_hg0xh")
 scale = Vector2(5, 5)
 sprite_frames = SubResource("SpriteFrames_brkgj")
 animation = &"walk_down"
+frame = 2
+frame_progress = 0.990374
 
 [node name="ProjectileSpawnPoint" type="Marker2D" parent="."]
+
+[node name="ShootTimer" type="Timer" parent="."]

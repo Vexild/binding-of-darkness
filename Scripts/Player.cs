@@ -61,12 +61,20 @@ public partial class Player : CharacterBody2D
 		// );
 
 		// Sprite directions
+		if (Velocity.Length() > 0) {
+			animationSprite.Play();
+		}
+		else {
+			animationSprite.Stop();
+		}
 		if (Velocity.X > 0)
 		{
+			// Diagonal walks have either up or down animation
 			if (Velocity.Y > 0)
-			{
-				animationSprite.Animation = "walk_down";
+			{	
+				animationSprite.Play("walk_down");
 				animationSprite.FlipH = false;
+
 			}
 			else if (Velocity.Y < 0)
 			{
@@ -107,11 +115,12 @@ public partial class Player : CharacterBody2D
 			animationSprite.Animation = "walk_down";
 			animationSprite.FlipH = false;
 		}
-		// TODO: Add animations
 
 		if (Input.IsActionPressed("shoot_left"))
 		{
 			GD.Print("Shoot left");
+
+			// Set state is Shooting with direction parameter
 		}
 
 	}
