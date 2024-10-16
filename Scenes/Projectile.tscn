@@ -11,9 +11,6 @@ animations = [{
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("1_8iigf")
-}, {
-"duration": 1.0,
-"texture": ExtResource("1_8iigf")
 }],
 "loop": true,
 "name": &"greenprojectile",
@@ -30,3 +27,4 @@ shape = SubResource("CircleShape2D_timvj")
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_xehsa")
 animation = &"greenprojectile"
+frame_progress = 0.489284
