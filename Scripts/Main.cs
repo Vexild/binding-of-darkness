@@ -18,10 +18,15 @@ public partial class Main : Node2D
 	{
 	}
 
-	public void OnPlayerShootProjectile(Godot.Vector2 pos) {
+	public void OnPlayerShootProjectile(Godot.Vector2 playerPos) {
 		// NOTE: Important to cast the instance as Node2D. Otherwise the instance would not have a Position attribute
-		var newProjectile = (Node2D)ProjectileScene.Instantiate();
+		var newProjectile = ProjectileScene.Instantiate() as Node2D;
 		GetNode<Node2D>("Shots").AddChild(newProjectile);
-		newProjectile.Position = pos;
+		newProjectile.Position = playerPos;
+		
+	}
+	public void OnDeleteProjectile() {
+		QueueFree();
+		GD.Print("Projectile removed");
 	}
 }
