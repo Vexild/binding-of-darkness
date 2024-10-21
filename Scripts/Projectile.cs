@@ -7,6 +7,9 @@ public partial class Projectile : Area2D
 	public int Speed = 300;
 	[Export]
 	public float ProjectileRange = 400.0f;
+	[Export]
+	public int ProjectileDamage = 2;
+	private bool ProjectileInMotion = true;
 	private float DistanceTraveled;
 	[Signal]
 	public delegate void DeleteProjectileEventHandler();
@@ -22,18 +25,34 @@ public partial class Projectile : Area2D
 		// Once we reach max range for the projectile, animation ends
 		if (DistanceTraveled >= ProjectileRange)
 		{
+			// Stop the motion
+			ProjectileInMotion = false;
 			GetNode<AnimatedSprite2D>("Animation").Play("hit");
 		}
 		else
 		{
 			DistanceTraveled += SpeedDelta;
-			// C# does not allow using Position.X += ... because 'Node2D.Position' is not a variable 
-			SetPosition(new Vector2((float)(Position.X - SpeedDelta), Position.Y));
+			// Exloding shot should not move
+			if (ProjectileInMotion)
+			{
+				// C# does not allow using Position.X += ... because 'Node2D.Position' is not a variable 
+				SetPosition(new Vector2((float)(Position.X - SpeedDelta), Position.Y));
+			}
 		}
 
 	}
 	public void _on_animation_animation_finished()
 	{
 		QueueFree();
+	}
+
+	public void OnEnemyContanct(Node2D node)
+	{
+		if (node.IsInGroup("enemy_dummy"))
+		{
+			GD.Print("We hit: ", node.Name);
+			ProjectileInMotion = false;
+			GetNode<AnimatedSprite2D>("Animation").Play("hit");
+		}
 	}
 }

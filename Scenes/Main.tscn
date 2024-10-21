@@ -1,12 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://fnxrvmg6ekqt"]
+[gd_scene load_steps=5 format=3 uid="uid://fnxrvmg6ekqt"]
 
 [ext_resource type="PackedScene" uid="uid://br8qon0w6ndrw" path="res://Scenes/Player.tscn" id="1_ybvov"]
 [ext_resource type="Script" path="res://Scripts/Main.cs" id="2_lyr0j"]
+[ext_resource type="PackedScene" uid="uid://dh2g1usrr6xu5" path="res://Scenes/Enemy.tscn" id="3_bhbp3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o8mg4"]
 size = Vector2(14, 659)
 
 [node name="Main" type="Node2D"]
+y_sort_enabled = true
 script = ExtResource("2_lyr0j")
 
 [node name="Player" parent="." instance=ExtResource("1_ybvov")]
@@ -33,6 +35,11 @@ position = Vector2(578, 650)
 rotation = 1.5708
 scale = Vector2(1, 1.77)
 shape = SubResource("RectangleShape2D_o8mg4")
+
+[node name="Enemies" type="Node" parent="."]
+
+[node name="Enemy" parent="Enemies" instance=ExtResource("3_bhbp3")]
+position = Vector2(401, 316)
 
 [node name="Shots" type="Node2D" parent="."]
 top_level = true

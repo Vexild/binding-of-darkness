@@ -1,0 +1,96 @@
+[gd_scene load_steps=13 format=3 uid="uid://dh2g1usrr6xu5"]
+
+[ext_resource type="Texture2D" uid="uid://bmkkqcg6au5p2" path="res://Assets/dummy.png" id="1_ophkr"]
+[ext_resource type="Script" path="res://Scripts/Enemy.cs" id="1_xmno5"]
+[ext_resource type="Texture2D" uid="uid://bguu0eit0aeq2" path="res://Assets/explosions/Half Sized/3.png" id="3_aam3s"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_82d6a"]
+size = Vector2(50, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d6r8v"]
+atlas = ExtResource("3_aam3s")
+region = Rect2(256, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bfvhc"]
+atlas = ExtResource("3_aam3s")
+region = Rect2(256, 256, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k80fg"]
+atlas = ExtResource("3_aam3s")
+region = Rect2(256, 512, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4fq0b"]
+atlas = ExtResource("3_aam3s")
+region = Rect2(256, 768, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rbtjm"]
+atlas = ExtResource("3_aam3s")
+region = Rect2(256, 1024, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jad2f"]
+atlas = ExtResource("3_aam3s")
+region = Rect2(256, 1280, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qob5b"]
+atlas = ExtResource("3_aam3s")
+region = Rect2(256, 1536, 256, 256)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jbkrv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d6r8v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bfvhc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k80fg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4fq0b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rbtjm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jad2f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qob5b")
+}],
+"loop": true,
+"name": &"death_animation",
+"speed": 15.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_ophkr")
+}],
+"loop": true,
+"name": &"dummy",
+"speed": 5.0
+}]
+
+[node name="Enemy" type="Area2D" groups=["enemy_dummy"]]
+script = ExtResource("1_xmno5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_82d6a")
+
+[node name="EnemyAnimation" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.15, 0.15)
+sprite_frames = SubResource("SpriteFrames_jbkrv")
+animation = &"dummy"
+frame_progress = 0.956669
+
+[node name="EnemyHP" type="ProgressBar" parent="."]
+offset_left = -26.0
+offset_top = -65.0
+offset_right = 27.0
+offset_bottom = -38.0
+max_value = 10.0
+step = 1.0
+
+[connection signal="OnHitByPlayer" from="." to="." method="ProjectileHit"]
+[connection signal="area_entered" from="." to="." method="OnAreaEntered"]
