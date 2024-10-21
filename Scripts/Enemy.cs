@@ -32,7 +32,6 @@ public partial class Enemy : Area2D
 		if (CurrentHp <= 0)
 		{
 			GetNode<ProgressBar>("EnemyHP").Value = CurrentHp;
-			GD.Print("Death. Play the death animation");
 			enemyAnimation.Stop();
 			enemyAnimation.Play("death_animation");
 		}

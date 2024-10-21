@@ -12,7 +12,7 @@ public partial class Player : CharacterBody2D
 	public Boolean ProjectileCooldown { get; set; } = false;
 	// Define the shooting signal with direction
 	[Signal]
-	public delegate void ShootProjectileEventHandler(float pos);
+	public delegate void ShootProjectileEventHandler(float pos, Vector2 dir);
 
 	public override void _Ready()
 	{
@@ -23,6 +23,7 @@ public partial class Player : CharacterBody2D
 	public override void _PhysicsProcess(double delta)
 	{
 		Vector2 move_input = Input.GetVector("move_left", "move_right", "move_up", "move_down");
+		Vector2 shoot_direction = Input.GetVector("shoot_left", "shoot_right", "shoot_up", "shoot_down");
 		var animationSprite = GetNode<AnimatedSprite2D>("animation");
 		Velocity = move_input * PlayerSpeed;
 		MoveAndSlide();
@@ -86,10 +87,11 @@ public partial class Player : CharacterBody2D
 		}
 
 		// Shooting actions
-		if (Input.IsActionPressed("shoot_left") && !ProjectileCooldown)
+		if (( shoot_direction.X != 0 || shoot_direction.Y != 0 ) && !ProjectileCooldown )
 		{
+
 			// Emmit Signal and capture it in Main
-			EmitSignal(SignalName.ShootProjectile, Position);
+			EmitSignal(SignalName.ShootProjectile, Position, shoot_direction);
 			ProjectileCooldown = true;
 			GetNode<Timer>("ShootTimer").Start(ProjectileSpeed);
 			GD.Print("SHOT");
