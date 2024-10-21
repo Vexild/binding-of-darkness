@@ -164,7 +164,6 @@ animations = [{
 [node name="Player" type="CharacterBody2D"]
 texture_filter = 1
 script = ExtResource("1_u0nnw")
-ProjectileSpeed = 0.4
 
 [node name="collision" type="CollisionShape2D" parent="."]
 position = Vector2(0, 0.5)

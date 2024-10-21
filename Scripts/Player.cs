@@ -9,7 +9,7 @@ public partial class Player : CharacterBody2D
 	[Export]
 	public float ProjectileSpeed { get; private set; } = 0.5f;
 
-	public bool ProjectileCooldown { get; set; } = false;
+	public Boolean ProjectileCooldown { get; set; } = false;
 	// Define the shooting signal with direction
 	[Signal]
 	public delegate void ShootProjectileEventHandler(float pos);

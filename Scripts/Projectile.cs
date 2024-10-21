@@ -4,7 +4,7 @@ using System;
 public partial class Projectile : Area2D
 {
 	[Export]
-	public int Speed = 300;
+	public int Speed = 500;
 	[Export]
 	public float ProjectileRange = 400.0f;
 	[Export]
@@ -50,7 +50,6 @@ public partial class Projectile : Area2D
 	{
 		if (node.IsInGroup("enemy_dummy"))
 		{
-			GD.Print("We hit: ", node.Name);
 			ProjectileInMotion = false;
 			GetNode<AnimatedSprite2D>("Animation").Play("hit");
 		}
