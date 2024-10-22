@@ -87,9 +87,8 @@ public partial class Player : CharacterBody2D
 		}
 
 		// Shooting actions
-		if (( shoot_direction.X != 0 || shoot_direction.Y != 0 ) && !ProjectileCooldown )
+		if ((shoot_direction.X != 0 || shoot_direction.Y != 0) && !ProjectileCooldown)
 		{
-
 			// Emmit Signal and capture it in Main
 			EmitSignal(SignalName.ShootProjectile, Position, shoot_direction);
 			ProjectileCooldown = true;
@@ -97,6 +96,7 @@ public partial class Player : CharacterBody2D
 			GD.Print("SHOT");
 		}
 	}
+	
 	public void OnShooTimerTimeout()
 	{
 		ProjectileCooldown = false;
