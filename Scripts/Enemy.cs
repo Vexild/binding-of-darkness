@@ -11,13 +11,13 @@ public partial class Enemy : Area2D
 	public delegate void OnHitByPlayerEventHandler();
 
 	private AnimatedSprite2D enemyAnimation { get; set; }
-	private ProgressBar hitPointBar { get; set; }
+	private ProgressBar HitPointBar { get; set; }
 	public override void _Ready()
 	{
 		CurrentHp = EnemyMaxHP;
-		hitPointBar = GetNode<ProgressBar>("EnemyHP");
+		HitPointBar = GetNode<ProgressBar>("EnemyHP");
 		enemyAnimation = GetNode<AnimatedSprite2D>("EnemyAnimation");
-		hitPointBar.Value = EnemyMaxHP;
+		HitPointBar.Value = EnemyMaxHP;
 		enemyAnimation.Play("idle");
 	}
 

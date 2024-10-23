@@ -181,4 +181,20 @@ frame_progress = 0.990374
 [node name="ShootTimer" type="Timer" parent="."]
 one_shot = true
 
+[node name="ShootTimerBar" type="ProgressBar" parent="."]
+offset_left = 25.0
+offset_top = -14.0
+offset_right = 78.0
+offset_bottom = 13.0
+max_value = 60.0
+step = 1.0
+value = 1.0
+
+[node name="Label" type="Label" parent="ShootTimerBar"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = -23.0
+offset_right = 23.0
+text = "CD"
+
 [connection signal="timeout" from="ShootTimer" to="." method="OnShooTimerTimeout"]
