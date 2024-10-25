@@ -161,7 +161,7 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" groups=["player"]]
 texture_filter = 1
 script = ExtResource("1_u0nnw")
 
@@ -176,7 +176,7 @@ animation = &"walk_down"
 frame = 2
 frame_progress = 0.990374
 
-[node name="ProjectileSpawnPoint" type="Marker2D" parent="."]
+[node name="EnemyTargetPoint" type="Marker2D" parent="."]
 
 [node name="ShootTimer" type="Timer" parent="."]
 one_shot = true

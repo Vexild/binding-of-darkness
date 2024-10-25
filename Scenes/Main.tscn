@@ -41,13 +41,11 @@ shape = SubResource("RectangleShape2D_o8mg4")
 [node name="Enemy" parent="Enemies" instance=ExtResource("3_bhbp3")]
 position = Vector2(401, 316)
 
-[node name="Enemy2" parent="Enemies" instance=ExtResource("3_bhbp3")]
-position = Vector2(322, 423)
-
-[node name="Enemy3" parent="Enemies" instance=ExtResource("3_bhbp3")]
-position = Vector2(309, 203)
-
 [node name="Shots" type="Node2D" parent="."]
 top_level = true
 
+[node name="EnemyShots" type="Node2D" parent="."]
+top_level = true
+
 [connection signal="ShootProjectile" from="Player" to="." method="OnPlayerShootProjectile"]
+[connection signal="ShootEnemyProjectile" from="Enemies/Enemy" to="." method="OnEnemyShootProjectile"]

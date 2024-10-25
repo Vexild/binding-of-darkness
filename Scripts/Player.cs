@@ -8,29 +8,28 @@ public partial class Player : CharacterBody2D
 	[Export]
 	public int PlayerSpeed { get; set; } = 400;
 	[Export]
-	public float ProjectileSpeed { get; private set; } = 0.5f;
+	public float ProjectileCooldown { get; private set; } = 0.5f;
+	public bool IsProjectileOnCooldown { get; set; } = false;
 
-	public bool ProjectileCooldown { get; set; } = false;
-
-	// Define the shooting signal with direction
 	[Signal]
 	public delegate void ShootProjectileEventHandler(float pos, Vector2 dir);
 	private Vector2 LatestShootingDirection;
+	private Vector2 EnemyTargetPoint;
 	public override void _Ready()
 	{
 		GD.Print("Player Spawned");
 		// Debugging
 		GetNode<ProgressBar>("ShootTimerBar").Value = GetNode<ProgressBar>("ShootTimerBar").MaxValue;
+		EnemyTargetPoint = GetNode<Marker2D>("EnemyTargetPoint").Position;
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
 		Vector2 move_input = Input.GetVector("move_left", "move_right", "move_up", "move_down");
 		Velocity = move_input * PlayerSpeed;
 		MoveAndSlide();
 		HandleSpriteFlips();
-		if (!ProjectileCooldown)
+		if (!IsProjectileOnCooldown)
 		{
 			ListenShootingActionAndFire();
 		}
@@ -40,7 +39,6 @@ public partial class Player : CharacterBody2D
 		{
 			GetNode<ProgressBar>("ShootTimerBar").Value += 1;
 		}
-
 	}
 
 	private void HandleSpriteFlips()
@@ -119,7 +117,7 @@ public partial class Player : CharacterBody2D
 			{
 				EmitSignal(SignalName.ShootProjectile, Position, new Vector2(-1, 0));
 			}
-			ProjectileCooldown = true;
+			IsProjectileOnCooldown = true;
 
 		}
 		else if (Input.IsActionPressed("shoot_right"))
@@ -136,7 +134,7 @@ public partial class Player : CharacterBody2D
 			{
 				EmitSignal(SignalName.ShootProjectile, Position, new Vector2(1, 0));
 			}
-			ProjectileCooldown = true;
+			IsProjectileOnCooldown = true;
 
 		}
 		else if (Input.IsActionPressed("shoot_up"))
@@ -149,7 +147,7 @@ public partial class Player : CharacterBody2D
 			{
 				EmitSignal(SignalName.ShootProjectile, Position, new Vector2(0, -1));
 			}
-			ProjectileCooldown = true;
+			IsProjectileOnCooldown = true;
 
 		}
 		else if (Input.IsActionPressed("shoot_down"))
@@ -162,14 +160,14 @@ public partial class Player : CharacterBody2D
 			{
 				EmitSignal(SignalName.ShootProjectile, Position, new Vector2(0, 1));
 			}
-			ProjectileCooldown = true;
+			IsProjectileOnCooldown = true;
 		}
-		GetNode<Timer>("ShootTimer").Start(ProjectileSpeed);
+		GetNode<Timer>("ShootTimer").Start(ProjectileCooldown);
 		GetNode<ProgressBar>("ShootTimerBar").Value = 0;
 
 	}
 	public void OnShooTimerTimeout()
 	{
-		ProjectileCooldown = false;
+		IsProjectileOnCooldown = false;
 	}
 }

@@ -157,6 +157,10 @@ offset_bottom = -51.0
 max_value = 10.0
 step = 1.0
 
+[node name="EnemyShootCooldown" type="Timer" parent="."]
+wait_time = 2.0
+
 [connection signal="OnHitByPlayer" from="." to="." method="ProjectileHit"]
 [connection signal="area_entered" from="." to="." method="OnAreaEntered"]
 [connection signal="animation_finished" from="EnemyAnimation" to="." method="OnDeathAnimationFinished"]
+[connection signal="timeout" from="EnemyShootCooldown" to="." method="EnemyShootCooldownFinished"]

@@ -69,23 +69,6 @@ region = Rect2(1536, 1792, 256, 256)
 [sub_resource type="SpriteFrames" id="SpriteFrames_xehsa"]
 animations = [{
 "frames": [{
-"duration": 1.0,
-"texture": ExtResource("3_njkjd")
-}, {
-"duration": 1.0,
-"texture": ExtResource("1_8iigf")
-}, {
-"duration": 1.0,
-"texture": ExtResource("5_fvf5n")
-}, {
-"duration": 1.0,
-"texture": ExtResource("4_x8okr")
-}],
-"loop": true,
-"name": &"greenprojectile",
-"speed": 10.0
-}, {
-"frames": [{
 "duration": 1.5,
 "texture": SubResource("AtlasTexture_sohbx")
 }, {
@@ -131,6 +114,23 @@ animations = [{
 "loop": false,
 "name": &"hit",
 "speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_njkjd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_8iigf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_fvf5n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_x8okr")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 10.0
 }]
 
 [node name="Projectile" type="Area2D" groups=["PlayerProjectile"]]
@@ -144,7 +144,7 @@ shape = SubResource("CircleShape2D_timvj")
 texture_filter = 1
 scale = Vector2(0.7, 0.7)
 sprite_frames = SubResource("SpriteFrames_xehsa")
-animation = &"greenprojectile"
+animation = &"idle"
 
 [connection signal="area_entered" from="." to="." method="OnEnemyContanct"]
-[connection signal="animation_finished" from="Animation" to="." method="_on_animation_animation_finished"]
+[connection signal="animation_finished" from="Animation" to="." method="OnHitAnimationFinished"]
