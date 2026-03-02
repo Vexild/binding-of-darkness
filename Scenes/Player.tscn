@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://br8qon0w6ndrw"]
+[gd_scene load_steps=22 format=3 uid="uid://br8qon0w6ndrw"]
 
 [ext_resource type="Script" path="res://Scripts/Player.cs" id="1_u0nnw"]
 [ext_resource type="Texture2D" uid="uid://cvopdgeexye7j" path="res://Assets/playerSprite.png" id="2_b5cs2"]
@@ -161,11 +161,16 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2sors"]
+radius = 23.0
+height = 70.0
+
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 texture_filter = 1
 script = ExtResource("1_u0nnw")
 
 [node name="collision" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, 0.5)
 shape = SubResource("RectangleShape2D_hg0xh")
 
@@ -197,4 +202,10 @@ offset_top = -23.0
 offset_right = 23.0
 text = "CD"
 
+[node name="HitBox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+shape = SubResource("CapsuleShape2D_2sors")
+
 [connection signal="timeout" from="ShootTimer" to="." method="OnShooTimerTimeout"]
+[connection signal="area_entered" from="HitBox" to="." method="GotHitByEnemy"]

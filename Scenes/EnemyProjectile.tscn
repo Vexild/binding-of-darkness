@@ -58,6 +58,7 @@ animations = [{
 rotation = 1.5708
 scale = Vector2(3, 3)
 script = ExtResource("1_8pjve")
+ProjectileDamage = 6
 
 [node name="Collision" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_obghg")

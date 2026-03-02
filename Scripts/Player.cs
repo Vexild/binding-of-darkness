@@ -6,6 +6,8 @@ using System.Runtime.InteropServices;
 public partial class Player : CharacterBody2D
 {
 	[Export]
+	public int PlayerHitPoints { get; set; } = 6;
+	[Export]
 	public int PlayerSpeed { get; set; } = 400;
 	[Export]
 	public float ProjectileCooldown { get; private set; } = 0.5f;
@@ -13,6 +15,8 @@ public partial class Player : CharacterBody2D
 
 	[Signal]
 	public delegate void ShootProjectileEventHandler(float pos, Vector2 dir);
+	[Signal]
+	public delegate void PlayerEliminatedEventHandler();
 	private Vector2 LatestShootingDirection;
 	private Vector2 EnemyTargetPoint;
 	public override void _Ready()
@@ -165,6 +169,24 @@ public partial class Player : CharacterBody2D
 		GetNode<Timer>("ShootTimer").Start(ProjectileCooldown);
 		GetNode<ProgressBar>("ShootTimerBar").Value = 0;
 
+	}
+	public void GotHitByEnemy(Node2D proj)
+	{	
+		var projectileCast = (Projectile)proj;
+		if (projectileCast.ProjectileDamage >= PlayerHitPoints)
+		{
+			GD.Print("player dead, game over!");
+			// Play death animation
+			// Emit signal game over
+			EmitSignal(SignalName.PlayerEliminated);
+			//QueueFree(); // Lets not delete the player here at all. IT messes everything
+			
+		}
+		else
+		{
+			PlayerHitPoints -= projectileCast.ProjectileDamage;
+			GD.Print("Hit by ", projectileCast.ProjectileDamage, "damage. ",PlayerHitPoints, " left.");
+		}
 	}
 	public void OnShooTimerTimeout()
 	{
