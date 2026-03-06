@@ -1,7 +1,7 @@
-[gd_scene load_steps=22 format=3 uid="uid://dh2g1usrr6xu5"]
+[gd_scene format=3 uid="uid://dh2g1usrr6xu5"]
 
 [ext_resource type="Texture2D" uid="uid://bmkkqcg6au5p2" path="res://Assets/dummy.png" id="1_ophkr"]
-[ext_resource type="Script" path="res://Scripts/Enemy.cs" id="1_xmno5"]
+[ext_resource type="Script" uid="uid://cj2rt4rmh7n33" path="res://Scripts/Enemy.cs" id="1_xmno5"]
 [ext_resource type="Texture2D" uid="uid://fh4spoqaidum" path="res://Assets/explosions/4.png" id="2_2dvhw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_82d6a"]

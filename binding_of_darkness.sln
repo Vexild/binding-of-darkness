@@ -1,6 +1,6 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "binding_of_isaac_clone", "binding_of_isaac_clone.csproj", "{02C75565-217A-4111-9098-1064AC4BA05D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "binding_of_darkness", "binding_of_darkness.csproj", "{02C75565-217A-4111-9098-1064AC4BA05D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

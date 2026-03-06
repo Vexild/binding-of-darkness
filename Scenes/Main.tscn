@@ -1,56 +1,66 @@
-[gd_scene load_steps=5 format=3 uid="uid://fnxrvmg6ekqt"]
+[gd_scene format=3 uid="uid://fnxrvmg6ekqt"]
 
+[ext_resource type="Script" uid="uid://cmlvha2seq88f" path="res://Scripts/CoreManager.cs" id="1_rgh2o"]
 [ext_resource type="PackedScene" uid="uid://br8qon0w6ndrw" path="res://Scenes/Player.tscn" id="1_ybvov"]
-[ext_resource type="Script" path="res://Scripts/Main.cs" id="2_lyr0j"]
 [ext_resource type="PackedScene" uid="uid://dh2g1usrr6xu5" path="res://Scenes/Enemy.tscn" id="3_bhbp3"]
+[ext_resource type="PackedScene" uid="uid://dxto71lpa5fqn" path="res://Scenes/PlayerUI.tscn" id="4_rgh2o"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o8mg4"]
 size = Vector2(14, 659)
 
-[node name="Main" type="Node2D"]
+[node name="CoreManager" type="Node2D" unique_id=1747533639]
 y_sort_enabled = true
-script = ExtResource("2_lyr0j")
+script = ExtResource("1_rgh2o")
+PlayerMaxHitPoints = 3.0
+PlayerHitPoints = 3.0
 
-[node name="Player" parent="." instance=ExtResource("1_ybvov")]
+[node name="PlayerHitPointUi" parent="." unique_id=1660988505 instance=ExtResource("4_rgh2o")]
+
+[node name="Player" parent="." unique_id=471550213 instance=ExtResource("1_ybvov")]
 position = Vector2(582, 315)
 
-[node name="Walls" type="StaticBody2D" parent="."]
+[node name="Walls" type="StaticBody2D" parent="." unique_id=2097615982]
 
-[node name="LeftWall" type="CollisionShape2D" parent="Walls"]
+[node name="LeftWall" type="CollisionShape2D" parent="Walls" unique_id=44901978]
 position = Vector2(-3, 319.5)
 shape = SubResource("RectangleShape2D_o8mg4")
 
-[node name="RightWall" type="CollisionShape2D" parent="Walls"]
+[node name="RightWall" type="CollisionShape2D" parent="Walls" unique_id=1113062580]
 position = Vector2(1154, 319.5)
 shape = SubResource("RectangleShape2D_o8mg4")
 
-[node name="TopWall" type="CollisionShape2D" parent="Walls"]
+[node name="TopWall" type="CollisionShape2D" parent="Walls" unique_id=471190942]
 position = Vector2(578, -6)
 rotation = 1.5708
 scale = Vector2(1, 1.77)
 shape = SubResource("RectangleShape2D_o8mg4")
 
-[node name="BottomWall" type="CollisionShape2D" parent="Walls"]
+[node name="BottomWall" type="CollisionShape2D" parent="Walls" unique_id=696679098]
 position = Vector2(578, 650)
 rotation = 1.5708
 scale = Vector2(1, 1.77)
 shape = SubResource("RectangleShape2D_o8mg4")
 
-[node name="Enemies" type="Node" parent="."]
+[node name="Enemies" type="Node" parent="." unique_id=212386944]
 
-[node name="Enemy" parent="Enemies" instance=ExtResource("3_bhbp3")]
-position = Vector2(302, 159)
+[node name="Enemy" parent="Enemies" unique_id=1238454059 instance=ExtResource("3_bhbp3")]
+position = Vector2(301, 162)
 
-[node name="Enemy2" parent="Enemies" instance=ExtResource("3_bhbp3")]
-position = Vector2(834, 159)
+[node name="Enemy2" parent="Enemies" unique_id=1434047974 instance=ExtResource("3_bhbp3")]
+position = Vector2(938, 134.00002)
 
-[node name="Shots" type="Node2D" parent="."]
+[node name="Enemy3" parent="Enemies" unique_id=1967139672 instance=ExtResource("3_bhbp3")]
+position = Vector2(573.00006, 497)
+
+[node name="Shots" type="Node2D" parent="." unique_id=517764595]
 top_level = true
 
-[node name="EnemyShots" type="Node2D" parent="."]
+[node name="EnemyShots" type="Node2D" parent="." unique_id=1120891077 groups=["enemy_projectile_group"]]
 top_level = true
 
-[connection signal="PlayerEliminated" from="Player" to="." method="EliminatePlayer"]
+[connection signal="UpdatePlayerHitPointsInUI" from="." to="PlayerHitPointUi" method="UpdatePlayersHealth"]
+[connection signal="PlayerHitPointsChanged" from="Player" to="." method="OnPlayerHitPointsChanged"]
 [connection signal="ShootProjectile" from="Player" to="." method="OnPlayerShootProjectile"]
-[connection signal="SpawnNewEnemyProjectile" from="Enemies/Enemy" to="." method="EnemyShootAtPlayer"]
-[connection signal="SpawnNewEnemyProjectile" from="Enemies/Enemy2" to="." method="EnemyShootAtPlayer"]
+[connection signal="SpawnNewEnemyProjectile" from="Enemies/Enemy" to="." method="OnEnemyShootAtPlayer"]
+[connection signal="SpawnNewEnemyProjectile" from="Enemies/Enemy2" to="." method="OnEnemyShootAtPlayer"]
+[connection signal="SpawnNewEnemyProjectile" from="Enemies/Enemy3" to="." method="OnEnemyShootAtPlayer"]

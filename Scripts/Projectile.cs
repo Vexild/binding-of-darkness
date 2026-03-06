@@ -9,7 +9,7 @@ public partial class Projectile : Area2D
 	[Export]
 	public float ProjectileRange = 600.0f;
 	[Export]
-	public int ProjectileDamage = 2;
+	public float ProjectileDamage;
 	public Vector2 ProjectileDirection { get; set; }
 	public float ProjectileAngle { get; set; }
 	private bool ProjectileInMotion = true;

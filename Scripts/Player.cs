@@ -3,27 +3,35 @@ using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
+
 public partial class Player : CharacterBody2D
 {
-	[Export]
-	public int PlayerHitPoints { get; set; } = 6;
-	[Export]
-	public int PlayerSpeed { get; set; } = 400;
-	[Export]
-	public float ProjectileCooldown { get; private set; } = 0.5f;
-	public bool IsProjectileOnCooldown { get; set; } = false;
-
+	private Util util = new Util();
+	private CoreManager CoreManagerNode;
+	private int PlayerHitPointsHalf { get; set; }
+	private float PlayerSpeed { get; set; }
+	private float ProjectileCooldown { get; set; }
+	private bool IsProjectileOnCooldown { get; set; }
+	private ProgressBar ShootTimerBar;
+	private Timer ShootTimer;
 	[Signal]
 	public delegate void ShootProjectileEventHandler(float pos, Vector2 dir);
 	[Signal]
-	public delegate void PlayerEliminatedEventHandler();
+	public delegate void PlayerHitPointsChangedEventHandler(float newValue);
 	private Vector2 LatestShootingDirection;
 	private Vector2 EnemyTargetPoint;
 	public override void _Ready()
 	{
 		GD.Print("Player Spawned");
-		// Debugging
-		GetNode<ProgressBar>("ShootTimerBar").Value = GetNode<ProgressBar>("ShootTimerBar").MaxValue;
+		InitializeDebuggingNodes();
+		InitiateCoreManager();
+		ApplyInitialStatsFromManager();
+
+		GD.Print("Player Max Hit Points: " + CoreManagerNode.GetPlayerMaxHitPoints + "\n"
+			+ "Player Hit Points: " + util.FromHalfUnits(PlayerHitPointsHalf) + "\n"
+			+ "Player speed: " + PlayerSpeed + "\n"
+			);
+		ShootTimerBar.Value = ShootTimerBar.MaxValue;
 		EnemyTargetPoint = GetNode<Marker2D>("EnemyTargetPoint").Position;
 	}
 
@@ -38,11 +46,38 @@ public partial class Player : CharacterBody2D
 			ListenShootingActionAndFire();
 		}
 
-		// Debugging
-		if (GetNode<ProgressBar>("ShootTimerBar").Value < GetNode<ProgressBar>("ShootTimerBar").MaxValue)
+		if (ShootTimerBar.Value < ShootTimerBar.MaxValue)
 		{
-			GetNode<ProgressBar>("ShootTimerBar").Value += 1;
+			ShootTimerBar.Value += 1;
 		}
+	}
+
+	private void InitializeDebuggingNodes()
+	{
+		ShootTimerBar = GetNode<ProgressBar>("ShootTimerBar");
+		ShootTimer = GetNode<Timer>("ShootTimer");
+	}
+
+	private void InitiateCoreManager()
+	{
+		CoreManagerNode = GetParent() as CoreManager;
+		if (CoreManagerNode == null)
+		{
+			GD.PushError("Player: CoreManager parent is missing or wrong type.");
+		}
+	}
+
+	private void ApplyInitialStatsFromManager()
+	{
+		if (CoreManagerNode == null)
+		{
+			return;
+		}
+
+		PlayerHitPointsHalf = util.ToHalfUnits(CoreManagerNode.GetPlayerHitPoints);
+		ProjectileCooldown = CoreManagerNode.GetPlayerProjectileCooldown;
+		IsProjectileOnCooldown = CoreManagerNode.GetIsProjectileOnCooldown;
+		PlayerSpeed = CoreManagerNode.PlayerSpeed;
 	}
 
 	private void HandleSpriteFlips()
@@ -166,26 +201,18 @@ public partial class Player : CharacterBody2D
 			}
 			IsProjectileOnCooldown = true;
 		}
-		GetNode<Timer>("ShootTimer").Start(ProjectileCooldown);
-		GetNode<ProgressBar>("ShootTimerBar").Value = 0;
+		ShootTimer.Start(ProjectileCooldown);
+		ShootTimerBar.Value = 0;
 
 	}
-	public void GotHitByEnemy(Node2D proj)
-	{	
-		var projectileCast = (Projectile)proj;
-		if (projectileCast.ProjectileDamage >= PlayerHitPoints)
+	public void GotHitByEnemy(Projectile proj)
+	{
+		if (proj.IsThisEnemyShot)
 		{
-			GD.Print("player dead, game over!");
-			// Play death animation
-			// Emit signal game over
-			EmitSignal(SignalName.PlayerEliminated);
-			//QueueFree(); // Lets not delete the player here at all. IT messes everything
-			
-		}
-		else
-		{
-			PlayerHitPoints -= projectileCast.ProjectileDamage;
-			GD.Print("Hit by ", projectileCast.ProjectileDamage, "damage. ",PlayerHitPoints, " left.");
+			GD.Print("Got hit by projectile with damage: " + proj.ProjectileDamage);
+			var damageHalf = util.ToHalfUnits(proj.ProjectileDamage);
+			PlayerHitPointsHalf = Mathf.Max(0, PlayerHitPointsHalf - damageHalf);
+			EmitSignal(SignalName.PlayerHitPointsChanged, util.FromHalfUnits(PlayerHitPointsHalf));
 		}
 	}
 	public void OnShooTimerTimeout()
