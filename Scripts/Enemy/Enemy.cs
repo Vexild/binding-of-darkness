@@ -11,39 +11,31 @@ public partial class Enemy : Area2D
 	public float EnemyBaseDamage = 1.0f;
 	[Signal]
 	public delegate void OnHitByPlayerEventHandler();
-
-	[Signal]
-	public delegate void SpawnNewEnemyProjectileEventHandler(Vector2 position, float damage);
-
 	private ProgressBar HitPointBar { get; set; }
 	private float CurrentHp;
-	private Timer EnemyProjectileCooldown;
-	private bool EnemyReady = false;
 	private AnimatedSprite2D enemyAnimation { get; set; }
-	private CoreManager CoreManagerNode;
+	public CoreManager CoreManagerNode;
 	private Vector2 PlayerLocation;
-	private Util util;
+	public Util util = new Util();
 
 	public override void _Ready()
 	{
 		InitiateCoreManager();
-		
-		EnemyProjectileCooldown = GetNode<Timer>("EnemyShootCooldown");
-		EnemyProjectileCooldown.Start();
-		util = new Util();
-		CurrentHp = EnemyMaxHP;
-		HitPointBar = GetNode<ProgressBar>("EnemyHP");
-		enemyAnimation = GetNode<AnimatedSprite2D>("EnemyAnimation");
-		HitPointBar.Value = EnemyMaxHP;
-		enemyAnimation.Play("idle");
+		InitiateEnemy();
 	}
 
 	public override void _Process(double delta)
 	{
-		if (EnemyReady && PlayerIsAlive())
-		{
-			ShootAtPlayer();
-		}
+		
+	}
+
+	private void InitiateEnemy()
+	{
+		CurrentHp = EnemyMaxHP;
+		HitPointBar = GetNode<ProgressBar>("EnemyHP");
+		HitPointBar.Value = EnemyMaxHP;
+		enemyAnimation = GetNode<AnimatedSprite2D>("EnemyAnimation");
+		enemyAnimation.Play("idle");
 	}
 
 	public void DecreaseHP(float loss)
@@ -76,29 +68,12 @@ public partial class Enemy : Area2D
 		QueueFree();
 		//BUG: We never reach here if we spam shots and 'keep' the mob alive. We need to disable the hitbox once mob runs out of HP.
 	}
-	private void EnemyReadyAtAction()
-	{
-		EnemyReady = true;
-	}
-	private void ShootAtPlayer()
-	{
-		if (PlayerIsAlive())
-		{
-			EmitSignal(SignalName.SpawnNewEnemyProjectile, Position, util.NormalizeHalfStep(EnemyBaseDamage));
-			EnemyProjectileCooldown.Start();
-			EnemyReady = false;
-		}
-	}
-	private void EnemyShootCooldownFinished()
-	{
-		EnemyReady = true;
-	}
 
-	private bool PlayerIsAlive()
-	{
-		return CoreManagerNode != null && CoreManagerNode.IsPlayerAlive();
-	}
-	private void InitiateCoreManager()
+	// public bool PlayerIsAlive()
+	// {
+	// 	return CoreManagerNode != null && CoreManagerNode.IsPlayerAlive();
+	// }
+	public void InitiateCoreManager()
 	{
 		CoreManagerNode = GetParent().GetParent() as CoreManager;
 		if (CoreManagerNode == null)

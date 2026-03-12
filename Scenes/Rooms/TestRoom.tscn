@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://btgn5y672x7u8"]
+
+[ext_resource type="Script" uid="uid://cngwuem3ghgsx" path="res://Scripts/RoomManager.cs" id="1_24gi2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6am1c"]
+size = Vector2(14, 659)
+
+[node name="TestRoom" type="Node2D" unique_id=1064018063]
+script = ExtResource("1_24gi2")
+
+[node name="WallHitBox" type="StaticBody2D" parent="." unique_id=2036149158]
+
+[node name="LeftWall" type="CollisionShape2D" parent="WallHitBox" unique_id=623358621 groups=["RoomWall"]]
+position = Vector2(-3, 319.5)
+shape = SubResource("RectangleShape2D_6am1c")
+
+[node name="RightWall" type="CollisionShape2D" parent="WallHitBox" unique_id=1285572096 groups=["RoomWall"]]
+position = Vector2(1154, 319.5)
+shape = SubResource("RectangleShape2D_6am1c")
+
+[node name="TopWall" type="CollisionShape2D" parent="WallHitBox" unique_id=624994880 groups=["RoomWall"]]
+position = Vector2(578, -6)
+rotation = 1.5708
+scale = Vector2(1, 1.77)
+shape = SubResource("RectangleShape2D_6am1c")
+
+[node name="BottomWall" type="CollisionShape2D" parent="WallHitBox" unique_id=954054479 groups=["RoomWall"]]
+position = Vector2(578, 650)
+rotation = 1.5708
+scale = Vector2(1, 1.77)
+shape = SubResource("RectangleShape2D_6am1c")
+
+[node name="FloorNode" type="Node2D" parent="." unique_id=922934760]
+
+[node name="WallNode" type="Node2D" parent="." unique_id=1254064973]

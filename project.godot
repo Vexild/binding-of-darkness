@@ -26,6 +26,7 @@ project/assembly_name="binding_of_darkness"
 [global_group]
 
 enemy_projectile_group="This holds in all projectiles shot by enemies"
+RoomWall=""
 
 [input]
 

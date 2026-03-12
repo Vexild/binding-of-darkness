@@ -6,10 +6,6 @@ public partial class CoreManager : Node2D
 {
 	[Export]
 	public PackedScene ProjectileScene = GD.Load<PackedScene>("res://Scenes//Projectile.tscn");
-	[Export]
-	public PackedScene EnemyProjectileScene = GD.Load<PackedScene>("res://Scenes/EnemyProjectile.tscn");
-	[Signal]
-	public delegate void ShootEnemyProjectileEventHandler(float pos, Vector2 dir);
 	[Signal]
 	public delegate void UpdatePlayerHitPointsInUIEventHandler(float newValue);
 	[Signal]
@@ -42,18 +38,23 @@ public partial class CoreManager : Node2D
 	public bool IsPlayerAlive() { return PlayerAlive; }
 
 	private Vector2 PlayerPosition;
+	public Vector2 GetPlayerPosition { get { return PlayerPosition; } }
 	private Util util;
-
+	private Node2D EnemyShots;
+	private Player Player;
 	public override void _Ready()
 	{
 		util = new Util();
-		PlayerAlive = true;
-		PlayerMaxHitPoints = util.NormalizeHalfStep(PlayerMaxHitPoints);
-		PlayerHitPoints = util.NormalizeHalfStep(PlayerHitPoints);
-		if (PlayerHitPoints > PlayerMaxHitPoints)
-		{
-			PlayerHitPoints = PlayerMaxHitPoints;
-		}
+		InitializePlayer();
+		InitializeNodes();
+
+		// ** TEST AREA **
+		// Instantiate here a map. Map scene should have a simple spawn point and should make lifring
+		// for spawning enemies. When the enemies spanw, we can call connect to connect their signals
+
+			// TODO: Get the RommNode and set it to be the TestRoom in the Scenes/Rooms/TestRoom.tscn. Then, we can spawn an enemy in the TestRoom and connect the signal of the enemy to the Core Manager. This way, we can test the shooting mechanism of the shooter enemy and player projectile without worrying about the spawn system of the enemies.
+				// No, we need a mapManager for that. The map manager will be responsible for spawning the rooms and enemies. So, we can call the map manager to spawn the TestRoom and the ShooterEnemy in that room. Then, we can connect the signal of the ShooterEnemy to the Core Manager to test the shooting mechanism. This way, we can also test the spawn system of the enemies in the future when we have more enemy types and room types.
+		// ** TEST AREA END **
 	}
 	public override void _Process(double delta)
 	{
@@ -72,13 +73,14 @@ public partial class CoreManager : Node2D
 		newProjectile.ProjectileDamage = GetPlayerProjectileDamage;
 		newProjectile.Position = playerPos;
 	}
-	private void OnEnemyShootAtPlayer(Vector2 ShooterPosition, float damage)
+	private void OnEnemyShootAtPlayer(Vector2 ShooterPosition, PackedScene enemyProjectile, float damage)
 	{
+		GD.Print("OenemyShootAtPlayer ACTION");
 		damage = util.NormalizeHalfStep(damage);
 		if (PlayerAlive)
 		{
-			var Direction = ShooterPosition.DirectionTo(PlayerPosition);
-			var newEnemyProjectile = EnemyProjectileScene.Instantiate() as Projectile;
+			Vector2 Direction = ShooterPosition.DirectionTo(PlayerPosition);
+			Projectile newEnemyProjectile = enemyProjectile.Instantiate() as Projectile;
 
 			// Set all attributes here. Later, we want to make a single shoot function
 			// that takes in the nature of the shooter, distance, damage, speed, delays
@@ -86,14 +88,9 @@ public partial class CoreManager : Node2D
 			newEnemyProjectile.IsThisEnemyShot = true;
 			newEnemyProjectile.ProjectileDirection = Direction;
 			newEnemyProjectile.ProjectileDamage = damage;
-			GetNode<Node2D>("EnemyShots").AddChild(newEnemyProjectile);
+			EnemyShots.AddChild(newEnemyProjectile);
 			newEnemyProjectile.Position = ShooterPosition;
 		}
-
-	}
-	public void OnDeleteProjectile()
-	{
-		QueueFree();
 	}
 	public void OnPlayerHitPointsChanged(float newValue)
 	{
@@ -113,6 +110,22 @@ public partial class CoreManager : Node2D
 		GD.Print("Player Eliminated");
 		PlayerAlive = false;
 		EmitSignal(SignalName.PlayerEliminated);
-		GetNode<CharacterBody2D>("Player").QueueFree();
+		Player.QueueFree();
+	}
+
+	private void InitializePlayer()
+	{
+		PlayerAlive = true;
+		PlayerMaxHitPoints = util.NormalizeHalfStep(PlayerMaxHitPoints);
+		PlayerHitPoints = util.NormalizeHalfStep(PlayerHitPoints);
+		if (PlayerHitPoints > PlayerMaxHitPoints)
+		{
+			PlayerHitPoints = PlayerMaxHitPoints;
+		}
+	}
+	private void InitializeNodes()
+	{		
+		EnemyShots = GetNode<Node2D>("EnemyShots");
+		Player = GetNode<Player>("Player");
 	}
 }

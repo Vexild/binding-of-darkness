@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dh2g1usrr6xu5"]
 
+[ext_resource type="Script" uid="uid://cyvjhwvpbvb8c" path="res://Scripts/Enemy/ShooterEnemy.cs" id="1_m3078"]
 [ext_resource type="Texture2D" uid="uid://bmkkqcg6au5p2" path="res://Assets/dummy.png" id="1_ophkr"]
-[ext_resource type="Script" uid="uid://cj2rt4rmh7n33" path="res://Scripts/Enemy.cs" id="1_xmno5"]
 [ext_resource type="Texture2D" uid="uid://fh4spoqaidum" path="res://Assets/explosions/4.png" id="2_2dvhw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_82d6a"]
@@ -135,21 +135,21 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Enemy" type="Area2D" groups=["enemy_dummy"]]
+[node name="ShooterEnemy" type="Area2D" unique_id=1590639984 groups=["enemy_dummy"]]
 scale = Vector2(0.9, 0.9)
-script = ExtResource("1_xmno5")
+script = ExtResource("1_m3078")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1727762200]
 position = Vector2(0.5, -6.5)
 shape = SubResource("RectangleShape2D_82d6a")
 
-[node name="EnemyAnimation" type="AnimatedSprite2D" parent="."]
+[node name="EnemyAnimation" type="AnimatedSprite2D" parent="." unique_id=450851588]
 texture_filter = 1
 position = Vector2(0, 1.13687e-13)
 sprite_frames = SubResource("SpriteFrames_jbkrv")
 animation = &"idle"
 
-[node name="EnemyHP" type="ProgressBar" parent="."]
+[node name="EnemyHP" type="ProgressBar" parent="." unique_id=1484460477]
 offset_left = -25.0
 offset_top = -78.0
 offset_right = 28.0
@@ -157,7 +157,7 @@ offset_bottom = -51.0
 max_value = 10.0
 step = 1.0
 
-[node name="EnemyShootCooldown" type="Timer" parent="."]
+[node name="EnemyShootCooldown" type="Timer" parent="." unique_id=1035158142]
 wait_time = 2.0
 
 [connection signal="OnHitByPlayer" from="." to="." method="ProjectileHit"]
